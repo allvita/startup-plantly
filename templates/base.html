@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" x-data="themeManager()" x-init="init()" :class="dark ? 'dark' : ''">
 <head>
+<link rel="manifest" href="/static/manifest.json">
+<meta name="theme-color" content="#090909">
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>{% block title %}PlantCare AI{% endblock %}</title>
@@ -106,5 +108,11 @@
   document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
   document.body.addEventListener('htmx:afterSwap', () => lucide.createIcons());
 </script>
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/service-worker.js");
+}
+</script>
+
 </body>
 </html>

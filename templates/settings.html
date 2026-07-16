@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Settings · PlantCare AI{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen">
+  {% include "partials/sidebar.html" %}
+  <div class="flex-1 min-w-0">
+    {% include "partials/topbar.html" %}
+
+    <main class="px-6 lg:px-10 py-8 max-w-[900px] mx-auto">
+      <div class="mb-8 animate-fadeUp">
+        <h2 class="font-display text-2xl font-bold mb-1">Settings</h2>
+        <p class="text-sm text-[#6b7066] dark:text-muted">Tune PlantCare AI to fit how you garden.</p>
+      </div>
+
+      <div class="space-y-5">
+
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-7 animate-fadeUp">
+          <h3 class="font-display font-bold mb-5">Appearance</h3>
+          <div class="flex items-center justify-between py-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-leaf/10 flex items-center justify-center">
+                <i data-lucide="moon" class="w-4 h-4 text-leaf"></i>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">Dark Mode</p>
+                <p class="text-xs text-[#8a8f83] dark:text-muted">Premium, OLED-friendly black theme</p>
+              </div>
+            </div>
+            <button @click="toggle()" type="button"
+              class="w-12 h-7 rounded-full relative transition-colors"
+              :class="dark ? 'bg-leaf' : 'bg-black/10'">
+              <span class="absolute top-1 w-5 h-5 rounded-full bg-white transition-all"
+                :class="dark ? 'left-6' : 'left-1'"></span>
+            </button>
+          </div>
+        </div>
+
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-7 animate-fadeUp">
+          <h3 class="font-display font-bold mb-5">Notifications</h3>
+          {% for icon, label, sub, checked in [
+            ('droplets', 'Watering Reminders', 'Get notified before your plants need water', true),
+            ('bar-chart-3', 'Weekly Health Report', 'A friendly summary every Sunday', true),
+            ('alert-circle', 'Critical Alerts', 'Only when something needs urgent attention', false),
+          ] %}
+          <div class="flex items-center justify-between py-3 {% if not loop.last %}border-b border-black/5 dark:border-white/5{% endif %}">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-2xl bg-leaf/10 flex items-center justify-center">
+                <i data-lucide="{{ icon }}" class="w-4 h-4 text-leaf"></i>
+              </div>
+              <div>
+                <p class="text-sm font-semibold">{{ label }}</p>
+                <p class="text-xs text-[#8a8f83] dark:text-muted">{{ sub }}</p>
+              </div>
+            </div>
+            <div x-data="{ on: {{ 'true' if checked else 'false' }} }">
+              <button @click="on = !on" type="button" class="w-12 h-7 rounded-full relative transition-colors"
+                :class="on ? 'bg-leaf' : 'bg-black/10 dark:bg-white/10'">
+                <span class="absolute top-1 w-5 h-5 rounded-full bg-white transition-all" :class="on ? 'left-6' : 'left-1'"></span>
+              </button>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-7 animate-fadeUp">
+          <h3 class="font-display font-bold mb-5">Account</h3>
+          <div class="flex items-center justify-between py-3 border-b border-black/5 dark:border-white/5">
+            <p class="text-sm font-semibold">Email</p>
+            <p class="text-sm text-[#8a8f83] dark:text-muted">{{ user.email }}</p>
+          </div>
+          <div class="flex items-center justify-between py-3">
+            <p class="text-sm font-semibold">Name</p>
+            <p class="text-sm text-[#8a8f83] dark:text-muted">{{ user.name }}</p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %}

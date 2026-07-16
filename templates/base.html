@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" x-data="themeManager()" x-init="init()" :class="dark ? 'dark' : ''">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{% block title %}PlantCare AI{% endblock %}</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>" />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['"Plus Jakarta Sans"', 'sans-serif'],
+          body: ['"Inter"', 'sans-serif'],
+        },
+        colors: {
+          leaf: {
+            DEFAULT: '#66E15A',
+            soft: '#8CEB82',
+            deep: '#4CBF43',
+          },
+          ink: {
+            DEFAULT: '#090909',
+            card: '#171717',
+            raised: '#1E1E1E',
+          },
+          mist: {
+            DEFAULT: '#F7F8F6',
+            card: '#FFFFFF',
+          },
+          tomato: '#D95C5C',
+          potato: '#A67C52',
+          muted: '#BEBEBE',
+        },
+        borderRadius: {
+          '2xl': '20px',
+          '3xl': '28px',
+          '4xl': '32px',
+        },
+        boxShadow: {
+          soft: '0 8px 30px -12px rgba(0,0,0,0.35)',
+          glow: '0 0 40px -8px rgba(102,225,90,0.35)',
+          card: '0 4px 24px rgba(0,0,0,0.06)',
+        },
+        keyframes: {
+          fadeUp: {
+            '0%': { opacity: 0, transform: 'translateY(12px)' },
+            '100%': { opacity: 1, transform: 'translateY(0)' },
+          },
+          floaty: {
+            '0%, 100%': { transform: 'translateY(0px)' },
+            '50%': { transform: 'translateY(-10px)' },
+          },
+          glowPulse: {
+            '0%, 100%': { opacity: 0.55 },
+            '50%': { opacity: 1 },
+          },
+        },
+        animation: {
+          fadeUp: 'fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both',
+          floaty: 'floaty 6s ease-in-out infinite',
+          glowPulse: 'glowPulse 3.5s ease-in-out infinite',
+        },
+      },
+    },
+  }
+</script>
+
+<!-- HTMX / Alpine / Chart.js / Lucide -->
+<script src="https://unpkg.com/htmx.org@1.9.12"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+
+<link rel="stylesheet" href="/static/css/style.css" />
+{% block extra_head %}{% endblock %}
+</head>
+<body class="font-body bg-mist dark:bg-ink text-[#101312] dark:text-white antialiased transition-colors duration-500 selection:bg-leaf/30">
+
+{% block body %}{% endblock %}
+
+<script src="/static/js/main.js"></script>
+{% block extra_scripts %}{% endblock %}
+
+<script>
+  function themeManager(){
+    return {
+      dark: true,
+      init(){
+        const saved = localStorage.getItem('plantcare-theme');
+        this.dark = saved ? saved === 'dark' : true;
+        this.$watch('dark', v => localStorage.setItem('plantcare-theme', v ? 'dark' : 'light'));
+      },
+      toggle(){ this.dark = !this.dark; }
+    }
+  }
+  document.addEventListener('DOMContentLoaded', () => lucide.createIcons());
+  document.body.addEventListener('htmx:afterSwap', () => lucide.createIcons());
+</script>
+</body>
+</html>

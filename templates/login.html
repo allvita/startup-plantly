@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Sign in · PlantCare AI{% endblock %}
+
+{% block body %}
+<div class="min-h-screen w-full flex items-center justify-center auth-bg px-6">
+
+  <div class="auth-orb w-[420px] h-[420px] bg-leaf/30 -top-40 -left-32"></div>
+  <div class="auth-orb w-[360px] h-[360px] bg-leaf/20 bottom-[-140px] right-[-100px]" style="animation-delay:2s;"></div>
+
+  <div class="relative z-10 w-full max-w-md animate-fadeUp">
+
+    <div class="flex items-center justify-center gap-3 mb-10">
+      <div class="w-11 h-11 rounded-2xl bg-leaf/15 flex items-center justify-center">
+        <i data-lucide="sprout" class="w-6 h-6 text-leaf"></i>
+      </div>
+      <span class="font-display text-2xl font-bold text-white tracking-tight">PlantCare <span class="text-leaf">AI</span></span>
+    </div>
+
+    <div class="glass rounded-3xl p-9 shadow-soft">
+      <h1 class="font-display text-2xl font-bold text-white mb-1.5">Welcome back</h1>
+      <p class="text-muted text-sm mb-8">Your garden has been growing while you were away.</p>
+
+      {% if error %}
+      <div class="mb-6 px-4 py-3 rounded-2xl bg-tomato/10 border border-tomato/30 text-tomato text-sm flex items-center gap-2">
+        <i data-lucide="alert-circle" class="w-4 h-4 shrink-0"></i>
+        <span>{{ error }}</span>
+      </div>
+      {% endif %}
+
+      <form method="post" action="/login" class="space-y-5">
+
+        <div>
+          <label class="block text-xs font-semibold text-muted mb-2 tracking-wide uppercase">Email</label>
+          <div class="relative">
+            <i data-lucide="mail" class="w-4 h-4 text-muted absolute left-4 top-1/2 -translate-y-1/2"></i>
+            <input type="email" name="email" required value="{{ email if email else 'admin@plantcare.ai' }}"
+              class="w-full bg-ink-raised/60 border border-white/10 rounded-2xl py-3.5 pl-11 pr-4 text-white placeholder-muted/60 text-sm
+                     focus:border-leaf/60 focus:ring-2 focus:ring-leaf/20 outline-none transition-all"
+              placeholder="you@plantcare.ai" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-muted mb-2 tracking-wide uppercase">Password</label>
+          <div class="relative">
+            <i data-lucide="lock" class="w-4 h-4 text-muted absolute left-4 top-1/2 -translate-y-1/2"></i>
+            <input id="password-input" type="password" name="password" required value="admin123"
+              class="w-full bg-ink-raised/60 border border-white/10 rounded-2xl py-3.5 pl-11 pr-11 text-white placeholder-muted/60 text-sm
+                     focus:border-leaf/60 focus:ring-2 focus:ring-leaf/20 outline-none transition-all"
+              placeholder="••••••••" />
+            <button type="button" onclick="togglePasswordVisibility('password-input', this.querySelector('i'))"
+              class="absolute right-4 top-1/2 -translate-y-1/2 text-muted hover:text-white transition-colors">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-1 text-sm">
+          <label class="flex items-center gap-2 text-muted cursor-pointer select-none">
+            <input type="checkbox" name="remember_me" checked
+              class="w-4 h-4 rounded-md bg-ink-raised border-white/20 text-leaf focus:ring-leaf/40" />
+            Remember me
+          </label>
+          <button type="button" class="text-muted hover:text-leaf transition-colors">Forgot password?</button>
+        </div>
+
+        <button type="submit"
+          class="w-full mt-2 bg-leaf hover:bg-leaf-soft text-ink font-display font-bold py-3.5 rounded-2xl
+                 transition-all duration-300 shadow-glow hover:shadow-[0_0_55px_-6px_rgba(102,225,90,0.55)]
+                 hover:-translate-y-0.5 active:translate-y-0">
+          Sign In
+        </button>
+      </form>
+
+      <p class="text-center text-xs text-muted mt-7">
+        Demo account — <span class="text-white/80">admin@plantcare.ai</span> / <span class="text-white/80">admin123</span>
+      </p>
+    </div>
+
+    <p class="text-center text-xs text-muted/60 mt-8">A calm, living home for your plants.</p>
+  </div>
+</div>
+{% endblock %}

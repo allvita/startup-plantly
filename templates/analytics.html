@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Analytics · PlantCare AI{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen">
+  {% include "partials/sidebar.html" %}
+  <div class="flex-1 min-w-0">
+    {% include "partials/topbar.html" %}
+
+    <main class="px-6 lg:px-10 py-8 max-w-[1400px] mx-auto">
+      <div class="mb-8 animate-fadeUp">
+        <h2 class="font-display text-2xl font-bold mb-1">Analytics</h2>
+        <p class="text-sm text-[#6b7066] dark:text-muted">How your garden has trended across the past week.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 animate-fadeUp">
+          <p class="text-xs uppercase tracking-wide text-[#8a8f83] dark:text-muted mb-2">Garden Health</p>
+          <p class="font-display text-3xl font-extrabold text-leaf"><span data-countup="{{ overall_health }}" data-suffix="%">0%</span></p>
+        </div>
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 animate-fadeUp">
+          <p class="text-xs uppercase tracking-wide text-[#8a8f83] dark:text-muted mb-2">Active Plants</p>
+          <p class="font-display text-3xl font-extrabold"><span data-countup="{{ plants | length }}">0</span></p>
+        </div>
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 animate-fadeUp">
+          <p class="text-xs uppercase tracking-wide text-[#8a8f83] dark:text-muted mb-2">Tasks This Week</p>
+          <p class="font-display text-3xl font-extrabold"><span data-countup="12">0</span></p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {% for series in plant_series %}
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6">
+          <p class="text-sm font-semibold mb-4 flex items-center gap-2">
+            <img src="{{ series.plant.image_path }}" class="w-4 h-4 object-contain" /> {{ series.plant.name }} Health Trend
+          </p>
+          <div class="h-[220px]">
+            <canvas data-chart="1" data-label="Health"
+              data-labels='{{ series.labels | tojson }}' data-values='{{ series.health | tojson }}'
+              data-accent="{{ series.plant.accent_color }}" id="analytics-health-{{ series.plant.id }}"></canvas>
+          </div>
+        </div>
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6">
+          <p class="text-sm font-semibold mb-4 flex items-center gap-2">
+            <img src="{{ series.plant.image_path }}" class="w-4 h-4 object-contain" /> {{ series.plant.name }} Soil Moisture
+          </p>
+          <div class="h-[220px]">
+            <canvas data-chart="1" data-label="Soil"
+              data-labels='{{ series.labels | tojson }}' data-values='{{ series.soil | tojson }}'
+              data-accent="#66E15A" id="analytics-soil-{{ series.plant.id }}"></canvas>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %}

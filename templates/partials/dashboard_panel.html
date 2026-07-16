@@ -1,0 +1,242 @@
+<div data-plant-accent="{{ plant.accent_color }}">
+
+  <!-- Health score + Next action row -->
+  <section class="grid grid-cols-1 lg:grid-cols-3 gap-5 mb-8">
+
+    <!-- Health score -->
+    <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-7 flex items-center gap-6 animate-fadeUp">
+      <div class="relative shrink-0">
+        <svg data-progress-ring="{{ plant.health_score }}" width="104" height="104" viewBox="0 0 104 104" class="progress-ring -rotate-90">
+          <circle cx="52" cy="52" r="44" fill="none" stroke="currentColor" class="text-black/5 dark:text-white/5" stroke-width="10"/>
+          <circle cx="52" cy="52" r="44" fill="none" stroke="{{ plant.accent_color if plant.accent_color else '#66E15A' }}" class="ring-value" stroke-width="10" stroke-linecap="round"/>
+        </svg>
+        <div class="absolute inset-0 flex items-center justify-center font-display font-extrabold text-lg">
+          <span data-countup="{{ plant.health_score }}" data-suffix="%">0%</span>
+        </div>
+      </div>
+      <div>
+        <p class="text-xs font-semibold text-[#8a8f83] dark:text-muted uppercase tracking-wide mb-1">{{ plant.name }} Health Score</p>
+        <h3 class="font-display text-xl font-bold mb-1">Excellent</h3>
+        <p class="text-xs text-[#8a8f83] dark:text-muted">Updated just now</p>
+      </div>
+    </div>
+
+    <!-- Next action -->
+    <div class="lg:col-span-2 card rounded-3xl p-7 text-white shadow-glow animate-fadeUp relative overflow-hidden"
+         style="background: linear-gradient(135deg, #163318 0%, #0d1f0f 100%);">
+      <div class="absolute -right-10 -top-10 w-40 h-40 rounded-full bg-leaf/20 blur-3xl"></div>
+      <div class="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <div class="min-w-0">
+          <span class="chip bg-white/10 text-leaf mb-4">
+            <i data-lucide="{{ next_action.icon }}" class="w-3.5 h-3.5"></i> Next Recommended Action
+          </span>
+          <h3 class="font-display text-2xl font-bold mb-1">{{ next_action.title }}</h3>
+          <p class="text-sm text-white/60">{{ next_action.detail }} · Estimated duration {{ next_action.duration }}</p>
+        </div>
+        <button class="shrink-0 bg-leaf hover:bg-leaf-soft text-ink font-display font-bold px-6 py-3.5 rounded-2xl
+                       transition-all hover:-translate-y-0.5 flex items-center gap-2 whitespace-nowrap">
+          <i data-lucide="check" class="w-4 h-4"></i> Mark as Done
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sensor grid -->
+  <section class="mb-8">
+    <h3 class="font-display text-lg font-bold mb-4">Live Sensors</h3>
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+
+      <!-- Soil moisture -->
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 animate-fadeUp">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-11 h-11 rounded-2xl bg-leaf/10 flex items-center justify-center">
+            <i data-lucide="droplets" class="w-5 h-5 text-leaf"></i>
+          </div>
+          <span class="trend-up text-xs font-semibold flex items-center gap-0.5"><i data-lucide="trending-up" class="w-3.5 h-3.5"></i> 2%</span>
+        </div>
+        <p class="font-display text-2xl font-extrabold mb-0.5"><span data-countup="{{ plant.soil_moisture }}" data-suffix="%">0%</span></p>
+        <p class="text-xs text-[#8a8f83] dark:text-muted mb-3">Soil Moisture · Healthy</p>
+        <div class="h-1.5 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
+          <div class="bar-fill h-full rounded-full bg-leaf" data-bar-fill="{{ plant.soil_moisture }}" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Temperature -->
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 animate-fadeUp">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-11 h-11 rounded-2xl bg-leaf/10 flex items-center justify-center">
+            <i data-lucide="thermometer" class="w-5 h-5 text-leaf"></i>
+          </div>
+          <span class="trend-up text-xs font-semibold flex items-center gap-0.5"><i data-lucide="trending-up" class="w-3.5 h-3.5"></i> 1°</span>
+        </div>
+        <p class="font-display text-2xl font-extrabold mb-0.5"><span data-countup="{{ plant.temperature }}" data-decimals="0" data-suffix="°C">0°C</span></p>
+        <p class="text-xs text-[#8a8f83] dark:text-muted mb-3">Temperature · Optimal</p>
+        <div class="h-1.5 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
+          <div class="bar-fill h-full rounded-full bg-leaf" data-bar-fill="{{ (plant.temperature / 40 * 100) | round }}" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Humidity -->
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 animate-fadeUp">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-11 h-11 rounded-2xl bg-leaf/10 flex items-center justify-center">
+            <i data-lucide="wind" class="w-5 h-5 text-leaf"></i>
+          </div>
+          <span class="trend-down text-xs font-semibold flex items-center gap-0.5"><i data-lucide="trending-down" class="w-3.5 h-3.5"></i> 1%</span>
+        </div>
+        <p class="font-display text-2xl font-extrabold mb-0.5"><span data-countup="{{ plant.humidity }}" data-suffix="%">0%</span></p>
+        <p class="text-xs text-[#8a8f83] dark:text-muted mb-3">Humidity · Balanced</p>
+        <div class="h-1.5 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
+          <div class="bar-fill h-full rounded-full bg-leaf" data-bar-fill="{{ plant.humidity }}" style="width:0%"></div>
+        </div>
+      </div>
+
+      <!-- Sunlight -->
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 animate-fadeUp">
+        <div class="flex items-center justify-between mb-4">
+          <div class="w-11 h-11 rounded-2xl bg-leaf/10 flex items-center justify-center">
+            <i data-lucide="sun" class="w-5 h-5 text-leaf"></i>
+          </div>
+          <span class="trend-up text-xs font-semibold flex items-center gap-0.5"><i data-lucide="trending-up" class="w-3.5 h-3.5"></i> 4%</span>
+        </div>
+        <p class="font-display text-2xl font-extrabold mb-0.5"><span data-countup="{{ plant.sunlight_hours }}" data-decimals="1" data-suffix=" Hrs">0 Hrs</span></p>
+        <p class="text-xs text-[#8a8f83] dark:text-muted mb-3">Sunlight · Excellent</p>
+        <div class="h-1.5 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
+          <div class="bar-fill h-full rounded-full bg-leaf" data-bar-fill="{{ (plant.sunlight_hours / 10 * 100) | round }}" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+
+    <!-- Care timeline -->
+    <div class="lg:col-span-2">
+      <h3 class="font-display text-lg font-bold mb-4">Care Timeline</h3>
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 sm:p-7">
+        <div class="space-y-1">
+          {% for t in tasks %}
+          <div class="flex items-start gap-4 py-3.5 {% if not loop.last %}border-b border-black/5 dark:border-white/5{% endif %}">
+            <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0
+                        {% if t.status == 'completed' %}bg-leaf/10{% else %}bg-black/[0.04] dark:bg-white/[0.05]{% endif %}">
+              <i data-lucide="{{ t.icon }}" class="w-5 h-5 {% if t.status == 'completed' %}text-leaf{% else %}text-[#8a8f83] dark:text-muted{% endif %}"></i>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <p class="font-display font-semibold text-sm">{{ t.task_type }}</p>
+                {% if t.priority == 'high' %}
+                <span class="chip bg-tomato/10 text-tomato text-[10px] py-0.5 px-2">High priority</span>
+                {% endif %}
+                {% if t.status == 'completed' %}
+                <span class="chip bg-leaf/10 text-leaf text-[10px] py-0.5 px-2"><i data-lucide="check" class="w-2.5 h-2.5"></i> Done</span>
+                {% endif %}
+              </div>
+              <p class="text-xs text-[#8a8f83] dark:text-muted mt-0.5">{{ t.date_label }} · {{ t.time_label }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Insights -->
+    <div>
+      <h3 class="font-display text-lg font-bold mb-4">Garden Insights</h3>
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 sm:p-7 space-y-5">
+        {% for insight in insights %}
+        <div class="flex items-start gap-3">
+          <div class="w-9 h-9 rounded-xl bg-leaf/10 flex items-center justify-center shrink-0 mt-0.5">
+            <i data-lucide="{{ insight.icon }}" class="w-4 h-4 text-leaf"></i>
+          </div>
+          <p class="text-sm text-[#4b5045] dark:text-[#d4d4d4] leading-relaxed">{{ insight.text }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <section class="mb-8">
+    <h3 class="font-display text-lg font-bold mb-4">Trends This Week</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6">
+        <p class="text-sm font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="heart-pulse" class="w-4 h-4 text-leaf"></i> Health Score
+        </p>
+        <div class="h-[220px]">
+          <canvas data-chart="1" data-label="Health"
+            data-labels='{{ chart_labels | tojson }}' data-values='{{ chart_health | tojson }}'
+            data-accent="{{ plant.accent_color }}" id="chart-health-{{ plant.id }}"></canvas>
+        </div>
+      </div>
+
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6">
+        <p class="text-sm font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="droplets" class="w-4 h-4 text-leaf"></i> Soil Moisture
+        </p>
+        <div class="h-[220px]">
+          <canvas data-chart="1" data-label="Soil"
+            data-labels='{{ chart_labels | tojson }}' data-values='{{ chart_soil | tojson }}'
+            data-accent="#66E15A" id="chart-soil-{{ plant.id }}"></canvas>
+        </div>
+      </div>
+
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6">
+        <p class="text-sm font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="thermometer" class="w-4 h-4 text-leaf"></i> Temperature
+        </p>
+        <div class="h-[220px]">
+          <canvas data-chart="1" data-label="Temp °C"
+            data-labels='{{ chart_labels | tojson }}' data-values='{{ chart_temp | tojson }}'
+            data-accent="{{ plant.accent_color }}" id="chart-temp-{{ plant.id }}"></canvas>
+        </div>
+      </div>
+
+      <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6">
+        <p class="text-sm font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="sun" class="w-4 h-4 text-leaf"></i> Sunlight Hours
+        </p>
+        <div class="h-[220px]">
+          <canvas data-chart="1" data-label="Sunlight"
+            data-labels='{{ chart_labels | tojson }}' data-values='{{ chart_sunlight | tojson }}'
+            data-accent="#66E15A" id="chart-sunlight-{{ plant.id }}"></canvas>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Plant details -->
+  <section>
+    <h3 class="font-display text-lg font-bold mb-4">Plant Details</h3>
+    <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-7">
+      <div class="flex flex-col sm:flex-row gap-7">
+        <div class="w-full sm:w-40 h-40 rounded-3xl bg-mist dark:bg-ink-raised flex items-center justify-center shrink-0 mx-auto sm:mx-0">
+          <img src="{{ plant.image_path }}" alt="{{ plant.name }}" class="w-24 h-24 object-contain leaf-float" />
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-5 flex-1">
+          {% set details = [
+            ('sprout', 'Growth Stage', plant.growth_stage),
+            ('calendar', 'Age', plant.age_days ~ ' days'),
+            ('map-pin', 'Location', plant.location),
+            ('package', 'Pot Size', plant.pot_size),
+            ('droplets', 'Last Watered', plant.last_watered),
+            ('flask-conical', 'Last Fertilized', plant.last_fertilized),
+            ('scissors', 'Last Pruning', plant.last_pruned),
+            ('spray-can', 'Last Neem Spray', plant.last_neem_spray),
+            ('gift', 'Expected Harvest', plant.expected_harvest),
+          ] %}
+          {% for icon, label, value in details %}
+          <div>
+            <p class="text-[11px] font-semibold text-[#8a8f83] dark:text-muted uppercase tracking-wide flex items-center gap-1.5 mb-1">
+              <i data-lucide="{{ icon }}" class="w-3.5 h-3.5"></i> {{ label }}
+            </p>
+            <p class="text-sm font-medium text-[#101312] dark:text-white">{{ value }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>

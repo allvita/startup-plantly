@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Calendar · PlantCare AI{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen">
+  {% include "partials/sidebar.html" %}
+  <div class="flex-1 min-w-0">
+    {% include "partials/topbar.html" %}
+
+    <main class="px-6 lg:px-10 py-8 max-w-[1400px] mx-auto">
+      <div class="mb-8 animate-fadeUp">
+        <h2 class="font-display text-2xl font-bold mb-1">Care Calendar</h2>
+        <p class="text-sm text-[#6b7066] dark:text-muted">Everything scheduled for your garden, in one place.</p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {% for group in tasks_by_plant %}
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-mist dark:bg-ink-raised flex items-center justify-center overflow-hidden">
+              <img src="{{ group.plant.image_path }}" class="w-6 h-6 object-contain" />
+            </div>
+            <h3 class="font-display text-lg font-bold">{{ group.plant.name }}</h3>
+          </div>
+
+          <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-6 sm:p-7 animate-fadeUp">
+            <div class="space-y-1">
+              {% for t in group.tasks %}
+              <div class="flex items-start gap-4 py-3.5 {% if not loop.last %}border-b border-black/5 dark:border-white/5{% endif %}">
+                <div class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0
+                            {% if t.status == 'completed' %}bg-leaf/10{% else %}bg-black/[0.04] dark:bg-white/[0.05]{% endif %}">
+                  <i data-lucide="{{ t.icon }}" class="w-5 h-5 {% if t.status == 'completed' %}text-leaf{% else %}text-[#8a8f83] dark:text-muted{% endif %}"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <p class="font-display font-semibold text-sm">{{ t.task_type }}</p>
+                    {% if t.priority == 'high' %}
+                    <span class="chip bg-tomato/10 text-tomato text-[10px] py-0.5 px-2">High priority</span>
+                    {% endif %}
+                  </div>
+                  <p class="text-xs text-[#8a8f83] dark:text-muted mt-0.5">{{ t.date_label }} · {{ t.time_label }}</p>
+                </div>
+                <span class="chip text-[10px] py-0.5 px-2 shrink-0
+                  {% if t.status == 'completed' %}bg-leaf/10 text-leaf{% else %}bg-black/[0.04] dark:bg-white/[0.06] text-[#8a8f83] dark:text-muted{% endif %}">
+                  {{ t.status | capitalize }}
+                </span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,153 @@
+/* ============================================================
+   PlantCare AI — custom design layer (Tailwind handles utilities)
+   ============================================================ */
+
+:root {
+  --accent-secondary: #66E15A;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(102, 225, 90, 0.35) transparent;
+}
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb { background: rgba(102, 225, 90, 0.35); border-radius: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+html { scroll-behavior: smooth; }
+
+[x-cloak] { display: none !important; }
+
+/* ---------- Glass cards ---------- */
+.glass {
+  background: rgba(23, 23, 23, 0.55);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.dark .glass { background: rgba(23, 23, 23, 0.55); }
+.glass-light {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* ---------- Card base ---------- */
+.card {
+  border-radius: 28px;
+  transition: transform 0.35s cubic-bezier(.16,1,.3,1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+}
+
+/* ---------- Ambient glow behind hero ---------- */
+.ambient-glow {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 15% 0%, rgba(102, 225, 90, 0.16), transparent 60%),
+    radial-gradient(45% 40% at 85% 10%, rgba(102, 225, 90, 0.10), transparent 60%);
+  pointer-events: none;
+}
+
+/* ---------- Circular progress ring ---------- */
+.progress-ring circle {
+  transition: stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1);
+  transform-origin: 50% 50%;
+}
+
+/* ---------- Animated linear progress bars ---------- */
+.bar-fill {
+  transition: width 1.2s cubic-bezier(.16,1,.3,1);
+}
+
+/* ---------- Fade / transition for HTMX swaps ---------- */
+.htmx-swapping {
+  opacity: 0;
+  transition: opacity 180ms ease-out;
+}
+.htmx-settling {
+  opacity: 0;
+}
+#dashboard-panel {
+  animation: panelFade 0.5s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes panelFade {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Sidebar item ---------- */
+.nav-item {
+  position: relative;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.nav-item.active::before {
+  content: "";
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 20px;
+  border-radius: 4px;
+  background: var(--accent-secondary, #66E15A);
+}
+
+/* ---------- Plant leaf illustration float ---------- */
+.leaf-float {
+  animation: leafFloat 7s ease-in-out infinite;
+}
+@keyframes leafFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+/* ---------- Chip ---------- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Sensor trend arrow ---------- */
+.trend-up { color: #66E15A; }
+.trend-down { color: #D95C5C; }
+
+/* ---------- Login animated gradient background ---------- */
+.auth-bg {
+  background: radial-gradient(120% 120% at 20% 0%, #10331088 0%, #090909 55%),
+              radial-gradient(120% 120% at 90% 100%, #0f2a0f66 0%, transparent 60%),
+              #090909;
+  position: relative;
+  overflow: hidden;
+}
+.auth-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+  animation: floaty 10s ease-in-out infinite;
+}
+
+/* ---------- Focus states (accessibility) ---------- */
+a:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid #66E15A;
+  outline-offset: 2px;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

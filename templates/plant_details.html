@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}{{ active_plant.name }} · PlantCare AI{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen">
+  {% include "partials/sidebar.html" %}
+  <div class="flex-1 min-w-0">
+    {% include "partials/topbar.html" %}
+
+    <main class="px-6 lg:px-10 py-8 max-w-[1400px] mx-auto" data-plant-accent="{{ active_plant.accent_color }}">
+      <a href="/plants" class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8a8f83] dark:text-muted hover:text-leaf mb-6 transition-colors">
+        <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Back to My Plants
+      </a>
+
+      <section class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-4xl p-8 sm:p-10 mb-8 animate-fadeUp">
+        <div class="flex flex-col sm:flex-row gap-8 items-center sm:items-start">
+          <div class="w-40 h-40 rounded-3xl bg-mist dark:bg-ink-raised flex items-center justify-center shrink-0">
+            <img src="{{ active_plant.image_path }}" alt="{{ active_plant.name }}" class="w-28 h-28 object-contain leaf-float" />
+          </div>
+          <div class="flex-1 text-center sm:text-left">
+            <span class="chip mb-3" style="background: {{ active_plant.accent_color }}1A; color: {{ active_plant.accent_color }};">
+              <i data-lucide="sprout" class="w-3.5 h-3.5"></i> {{ active_plant.growth_stage }}
+            </span>
+            <h2 class="font-display text-3xl font-extrabold mb-2">{{ active_plant.name }}</h2>
+            <p class="text-sm text-[#6b7066] dark:text-muted mb-6">{{ active_plant.species }} · {{ active_plant.location }}</p>
+            <div class="flex flex-wrap gap-3 justify-center sm:justify-start">
+              <a href="/#" hx-get="/plants/{{ active_plant.id }}/panel" hx-target="#dashboard-panel"
+                 class="bg-leaf hover:bg-leaf-soft text-ink font-display font-bold px-5 py-2.5 rounded-2xl text-sm transition-all hover:-translate-y-0.5">
+                Open in Dashboard
+              </a>
+            </div>
+          </div>
+          <div class="shrink-0 text-center">
+            <p class="font-display text-3xl font-extrabold text-leaf">{{ active_plant.health_score }}%</p>
+            <p class="text-xs text-[#8a8f83] dark:text-muted">Health Score</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+        {% set details = [
+          ('calendar', 'Age', active_plant.age_days ~ ' days'),
+          ('map-pin', 'Location', active_plant.location),
+          ('package', 'Pot Size', active_plant.pot_size),
+          ('droplets', 'Last Watered', active_plant.last_watered),
+          ('flask-conical', 'Last Fertilized', active_plant.last_fertilized),
+          ('scissors', 'Last Pruning', active_plant.last_pruned),
+          ('spray-can', 'Last Neem Spray', active_plant.last_neem_spray),
+          ('gift', 'Expected Harvest', active_plant.expected_harvest),
+        ] %}
+        {% for icon, label, value in details %}
+        <div class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-2xl p-5 animate-fadeUp">
+          <div class="w-9 h-9 rounded-xl bg-leaf/10 flex items-center justify-center mb-3">
+            <i data-lucide="{{ icon }}" class="w-4 h-4 text-leaf"></i>
+          </div>
+          <p class="text-[11px] uppercase tracking-wide text-[#8a8f83] dark:text-muted mb-1">{{ label }}</p>
+          <p class="text-sm font-semibold">{{ value }}</p>
+        </div>
+        {% endfor %}
+      </section>
+    </main>
+  </div>
+</div>
+{% endblock %}

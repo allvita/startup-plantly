@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Profile · PlantCare AI{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen">
+  {% include "partials/sidebar.html" %}
+  <div class="flex-1 min-w-0">
+    {% include "partials/topbar.html" %}
+
+    <main class="px-6 lg:px-10 py-8 max-w-[900px] mx-auto">
+
+      <section class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-4xl p-8 sm:p-10 mb-8 animate-fadeUp text-center">
+        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-leaf to-leaf-deep flex items-center justify-center
+                    font-display font-extrabold text-ink text-3xl mx-auto mb-5">
+          {{ user.name[0] | upper }}
+        </div>
+        <h2 class="font-display text-2xl font-bold mb-1">{{ user.name }}</h2>
+        <p class="text-sm text-[#8a8f83] dark:text-muted mb-6">{{ user.email }}</p>
+        <div class="flex items-center justify-center gap-8">
+          <div>
+            <p class="font-display text-xl font-extrabold text-leaf">{{ plants | length }}</p>
+            <p class="text-xs text-[#8a8f83] dark:text-muted">Plants</p>
+          </div>
+          <div class="w-px h-8 bg-black/5 dark:bg-white/10"></div>
+          <div>
+            <p class="font-display text-xl font-extrabold text-leaf">{{ overall_health }}%</p>
+            <p class="text-xs text-[#8a8f83] dark:text-muted">Garden Health</p>
+          </div>
+          <div class="w-px h-8 bg-black/5 dark:bg-white/10"></div>
+          <div>
+            <p class="font-display text-xl font-extrabold text-leaf">52</p>
+            <p class="text-xs text-[#8a8f83] dark:text-muted">Days Gardening</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-7 animate-fadeUp">
+        <h3 class="font-display font-bold mb-5">Your Garden</h3>
+        <div class="space-y-3">
+          {% for p in plants %}
+          <div class="flex items-center gap-4 py-2">
+            <div class="w-11 h-11 rounded-2xl bg-mist dark:bg-ink-raised flex items-center justify-center shrink-0">
+              <img src="{{ p.image_path }}" class="w-7 h-7 object-contain" />
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold">{{ p.name }}</p>
+              <p class="text-xs text-[#8a8f83] dark:text-muted">{{ p.location }}</p>
+            </div>
+            <span class="chip bg-leaf/10 text-leaf">{{ p.health_score }}%</span>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+{% endblock %}

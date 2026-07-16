@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}My Plants · PlantCare AI{% endblock %}
+
+{% block body %}
+<div class="flex min-h-screen">
+  {% include "partials/sidebar.html" %}
+  <div class="flex-1 min-w-0">
+    {% include "partials/topbar.html" %}
+
+    <main class="px-6 lg:px-10 py-8 max-w-[1400px] mx-auto">
+      <div class="mb-8 animate-fadeUp">
+        <h2 class="font-display text-2xl font-bold mb-1">My Plants</h2>
+        <p class="text-sm text-[#6b7066] dark:text-muted">Every plant in your garden, at a glance.</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {% for p in plants %}
+        <a href="/plants/{{ p.id }}/details"
+           class="card bg-white dark:bg-ink-card shadow-card dark:shadow-soft rounded-3xl p-7 block animate-fadeUp group">
+          <div class="flex items-start justify-between mb-5">
+            <div class="w-20 h-20 rounded-3xl bg-mist dark:bg-ink-raised flex items-center justify-center">
+              <img src="{{ p.image_path }}" alt="{{ p.name }}" class="w-14 h-14 object-contain group-hover:scale-105 transition-transform" />
+            </div>
+            <span class="chip" style="background: {{ p.accent_color }}1A; color: {{ p.accent_color }};">
+              <i data-lucide="circle-dot" class="w-3 h-3"></i> {{ p.growth_stage }}
+            </span>
+          </div>
+
+          <h3 class="font-display text-xl font-bold mb-1">{{ p.name }}</h3>
+          <p class="text-xs text-[#8a8f83] dark:text-muted mb-5">{{ p.location }}</p>
+
+          <div class="grid grid-cols-2 gap-4 mb-5">
+            <div>
+              <p class="text-[11px] uppercase tracking-wide text-[#8a8f83] dark:text-muted mb-1">Health</p>
+              <p class="font-display font-bold text-lg text-leaf">{{ p.health_score }}%</p>
+            </div>
+            <div>
+              <p class="text-[11px] uppercase tracking-wide text-[#8a8f83] dark:text-muted mb-1">Pot Size</p>
+              <p class="font-display font-bold text-sm">{{ p.pot_size }}</p>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 border-t border-black/5 dark:border-white/5">
+            <span class="chip bg-leaf/10 text-leaf">Healthy</span>
+            <span class="text-xs font-semibold text-leaf flex items-center gap-1 group-hover:gap-2 transition-all">
+              View details <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </main>
+  </div>
+</div>
+{% endblock %}
